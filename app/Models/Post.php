@@ -13,7 +13,10 @@ class Post extends Model
         'title',
         'desc',
         'author',
-        'topics'
+        'topics',
+        'attachment_hash_name',
+        'attachment_file_name',
+        'image_hash_name'
     ];
 }
 

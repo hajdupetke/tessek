@@ -3,6 +3,8 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;    
+use App\Models\Post;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -34,13 +36,48 @@ Route::post('/posts/store', function (Request $request) {
         'desc' => 'required|min:5|max:500',
         'author' => 'required|min:3|max:50',
         'topics' => 'required|array|min:1',
-        'topics.*' => 'distinct'
+        'topics.*' => 'distinct',
+        'attach_file' => 'nullable|mimes:txt,doc,docx,pdf,xls|max:4096',
+        'attach_image' => 'nullable|mimes:jpg,png|max:4096',
         ],
         [
             'title.required' => 'Milyen címet? A gecimet',
             'required' => 'teso ezt csinald itt meg azonnal 💪',
         ]
-);
+    );
+    [
+        'title' => $title, 
+        'desc' => $desc,
+        'author' => $author,
+        'topics' => $topics,
+    ] = $request;
+   
+    $attachHashName = '';
+    $attachFileName = '';
+    $imageHashName = '';
+    
+    if($request->hasFile('attach_file')) {
+        $attachFile = $request->file('attach_file');
+        $attachFileName = $attachFile->getOriginalClientName();
+        $attachHashName = $attachFile->hashName();
+        Storage::disk('public')->put($attachHashName, $attachFile->get());
+    }
+
+    if($request->hasFile('attach_image')) {
+        $imageFile = $request->file('attach_image');
+        $imageHashName = $imageFile->hashName();
+        Storage::disk('public')->put($attachHashName, $imageFile->get());
+    }
+
+    Post::create([
+        'title' => $title,
+        'desc' => $desc,
+        'author' => $author,
+        'topics' => json_encode($topics),
+        'attachment_hash_name' => $attachHashName,
+        'attachment_file_name' => $attachFileName,
+        'image_hash_name' => $imageHashName,
+    ]);
 })->name('posts.store');
 
 Route::middleware('auth')->group(function () {

@@ -17,6 +17,10 @@ return new class extends Migration
             $table->text('desc');
             $table->string('author');
             $table->json('topics'); // ['food', 'json']
+            $table->text('content')->default('This is a default text, because the author left the field empty 🙁');
+            $table->string('attachment_hash_name')->nullable();
+            $table->string('attachment_file_name')->nullable();
+            $table->string('image_hash_name')->nullable();
             $table->timestamps();
         });
     }

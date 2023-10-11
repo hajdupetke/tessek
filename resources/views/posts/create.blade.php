@@ -38,6 +38,24 @@
           <div class="text-red-500">Leírás hiba: {{ $message }}</div>
       @enderror
 
+      <label for="desc">Content</label>
+      <textarea name="desc" id="desc" cols="30" rows="10" class="thor-input-field">{{ old('desc', '') }}</textarea>
+      @error('content')
+          <div class="text-red-500">Tartalom hiba: {{ $message }}</div>
+      @enderror
+
+      <label for="attach_file">Csatolmány</label>
+      <input type="file" name="attach_file" id="attach_file" class="thor-input-field">
+      @error('attach_file')
+          <div class="text-red-500">Csatolmány hiba: {{ $message }}</div>
+      @enderror
+
+      <label for="attach_image>">Borítókép</label>
+      <input type="file" name="attach_image" id="attach_image" class="thor-input-field">
+      @error('attach_image')
+          <div class="text-red-500">Borítókép hiba: {{ $message }}</div>
+      @enderror
+
       <label for="author">Szerző</label>
       <input type="text" name="author" id="author" class="thor-input-field" value="{{ old('author', '') }}">
       @error('author')

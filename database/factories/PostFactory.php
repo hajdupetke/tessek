@@ -20,7 +20,9 @@ class PostFactory extends Factory
             'title' => fake()->sentence(),
             'desc' => fake()->text(),
             'author' => fake()->name(),
-            'topics' => fake()->randomElements(['food', 'politics', 'menthe', 'family']),
+            'topics' => json_encode(
+                fake()->randomElements(['food', 'politics', 'menthe', 'family'], null)
+            )
         ];
     }
 }
